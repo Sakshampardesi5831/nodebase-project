@@ -1,5 +1,4 @@
 "use client";
-import {} from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -7,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { FaGithub, FaGoogle } from "react-icons/fa";
 import {
   Card,
   CardContent,
@@ -84,7 +82,7 @@ const LoginForm = () => {
                     className="w-full"
                     disabled={isPending}
                   >
-                    <FaGithub className="mr-2 h-4 w-4" />
+                    <Image width={20} height={20} src={"/images/github.svg"} alt="github" />
                     Login with Github
                   </Button>
                   <Button
@@ -93,7 +91,7 @@ const LoginForm = () => {
                     className="w-full"
                     disabled={isPending}
                   >
-                    <FaGoogle className="mr-2 h-4 w-4" />
+                    <Image width={20} height={20} src={"/images/google.svg"} alt="google" />
                     Login with Google
                   </Button>
                 </div>

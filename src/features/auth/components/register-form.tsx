@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import Image from "next/image";
 const RegisterForm = () => {
   const router = useRouter();
 
@@ -89,7 +90,12 @@ const RegisterForm = () => {
                     className="w-full"
                     disabled={isPending}
                   >
-                    <FaGithub className="mr-2 h-4 w-4" />
+                    <Image
+                      width={20}
+                      height={20}
+                      src={"/images/github.svg"}
+                      alt="github"
+                    />
                     Login with Github
                   </Button>
                   <Button
@@ -98,7 +104,12 @@ const RegisterForm = () => {
                     className="w-full"
                     disabled={isPending}
                   >
-                    <FaGoogle className="mr-2 h-4 w-4" />
+                    <Image
+                      width={20}
+                      height={20}
+                      src={"/images/google.svg"}
+                      alt="google"
+                    />
                     Login with Google
                   </Button>
                 </div>
