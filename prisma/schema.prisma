@@ -83,3 +83,11 @@ model Verification {
   @@index([identifier])
   @@map("verification")
 }
+
+model Workflow {
+  id        String   @id @default(cuid())
+  name      String
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

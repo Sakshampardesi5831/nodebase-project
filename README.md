@@ -1,36 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nodebase Project
+
+A modern full-stack application built with Next.js, featuring authentication, database management, and workflow automation.
+
+## Tech Stack
+
+- **Framework**: Next.js 15.5.4 with Turbopack
+- **Authentication**: Better Auth with email/password
+- **Database**: PostgreSQL with Prisma ORM
+- **API**: tRPC for type-safe APIs
+- **UI**: Tailwind CSS with Radix UI components
+- **Workflows**: Inngest for background jobs
+- **Process Management**: mprocs for multi-process development
+
+## Project Structure
+
+```
+src/
+├── app/                 # Next.js app directory
+│   ├── (auth)/         # Authentication pages
+│   ├── api/            # API routes
+│   └── globals.css     # Global styles
+├── components/         # Reusable UI components
+│   └── ui/            # Shadcn/ui components
+├── features/          # Feature-specific components
+│   └── auth/          # Authentication features
+├── lib/               # Utility libraries
+│   ├── auth.ts        # Better Auth configuration
+│   ├── db.ts          # Prisma client setup
+│   └── utils.ts       # Utility functions
+├── trpc/              # tRPC configuration
+│   ├── routers/       # API route definitions
+│   ├── client.tsx     # Client-side tRPC
+│   └── server.tsx     # Server-side tRPC
+└── inngest/           # Inngest workflow functions
+```
+
+## Database Schema
+
+### Models
+- **User**: User accounts with authentication
+- **Session**: User sessions for Better Auth
+- **Account**: OAuth account linking
+- **Verification**: Email verification tokens
+- **Workflow**: Custom workflow management
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+
+- PostgreSQL database
+- npm or yarn
 
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Set up environment variables in `.env`:
+```env
+DATABASE_URL="postgresql://..."
+BETTER_AUTH_SECRET="your-secret-key"
+BETTER_AUTH_URL="http://localhost:3000"
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Set up the database:
+```bash
+npm run migrate
+npm run generate
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Development
 
-## Learn More
+#### Single Process
+```bash
+npm run dev          # Next.js development server
+npm run inngest-dev  # Inngest development server
+npm run studio       # Prisma Studio
+```
 
-To learn more about Next.js, take a look at the following resources:
+#### Multi-Process (Recommended)
+```bash
+npm run dev:all      # Runs all processes via mprocs
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This will start:
+- Next.js dev server at http://localhost:3000
+- Inngest dev server at http://localhost:8288
+- Prisma Studio at http://localhost:5555
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Available Scripts
 
-## Deploy on Vercel
+- `npm run dev` - Start Next.js development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run Biome linter
+- `npm run format` - Format code with Biome
+- `npm run generate` - Generate Prisma client
+- `npm run migrate` - Run database migrations
+- `npm run studio` - Open Prisma Studio
+- `npm run inngest-dev` - Start Inngest development server
+- `npm run dev:all` - Start all development processes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Authentication
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The project uses Better Auth for authentication with:
+- Email/password authentication
+- Automatic sign-in after registration
+- Session management
+- Email verification
+
+## API Routes
+
+### tRPC Endpoints
+- `getWorkflows` - Fetch user workflows
+- `createWorkFlow` - Create new workflow
+
+### Authentication Endpoints
+- `/api/auth/sign-up/email` - Email registration
+- `/api/auth/sign-in/email` - Email login
+- `/api/auth/sign-out` - Logout
+
+## Process Management
+
+The project uses `mprocs.yaml` for managing multiple development processes:
+
+```yaml
+procs:
+  inngest:
+    cmd: ["npm.cmd", "run", "inngest-dev"]
+  dev:
+    cmd: ["npm.cmd", "run", "dev"]
+  studio:
+    cmd: ["npm.cmd", "run", "studio"]
+```
