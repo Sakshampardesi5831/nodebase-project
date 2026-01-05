@@ -1,28 +1,54 @@
 import { prisma } from "@/lib/db";
 import { inngest } from "./client";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createOpenAI } from "@ai-sdk/openai";
+import { createAnthropic } from "@ai-sdk/anthropic";
+import { generateText } from "ai";
 
-export const helloWorld = inngest.createFunction(
-  { id: "hello-world" },
-  { event: "test/hello.world" },
+const google = createGoogleGenerativeAI();
+const openAi = createOpenAI();
+const anthropic = createAnthropic();
+export const execute = inngest.createFunction(
+  { id: "execute" },
+  { event: "execute/ai" },
   async ({ event, step }) => {
+    await step.sleep("pretend", "5s");
 
-    //fetching the video
-    await step.sleep("wait-a-moment", "15s");
+    const { steps: geminiStep } = await step.ai.wrap(
+      "gemini-generate-text",
+      generateText,
+      {
+        system: "You are helpful assistant",
+        prompt: "what is 2+2?",
+        model: google("gemini-2.5-flash"),
+      }
+    );
 
-   //Transcibing
-   await step.sleep("wait-a-moment", "15s")
+    const { steps: openAiStep } = await step.ai.wrap(
+      "openai-generate-text",
+      generateText,
+      {
+        system: "You are helpful assistant",
+        prompt: "what is 2+2?",
+        model: openAi("gpt-4"),
+      }
+    );
+    const { steps: anthropicStep } = await step.ai.wrap(
+      "anthropic-generate-text",
+      generateText,
+      {
+        system: "You are helpful assistant",
+        prompt: "what is 2+2?",
+        model: anthropic("claude-sonnet-4-5"),
+      }
+    );
 
-   //Sending transcription to AI 
-    await step.sleep("wait-a-moment", "15s")
+    const stepOutput = {
+      geminiStep: geminiStep,
+      openAiStep: openAiStep,
+      anthropicStep: anthropicStep,
+    };
 
-    await step.run("create-workflow",()=>{
-      return prisma.workflow.create({
-        data: {
-          name: "Test-workflow-from-inngest",
-          status: "completed",
-        }
-      })
-    })
-    return { message: `Hello ${event.data.email}!` };
-  },
+    return stepOutput;
+  }
 );
