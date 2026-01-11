@@ -66,7 +66,7 @@ const RegisterForm = () => {
           console.log("Error", ctx);
           toast.error(ctx.error.message);
         },
-      }
+      },
     );
   };
 

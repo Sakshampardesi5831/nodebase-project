@@ -13,7 +13,7 @@ export const appRouter = createTRPCRouter({
     .input(
       z.object({
         text: z.string(),
-      })
+      }),
     )
     .query(async ({ ctx }) => {
       //console.log("user detail===>",ctx.auth.user.email)
@@ -23,7 +23,7 @@ export const appRouter = createTRPCRouter({
     .input(
       z.object({
         text: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       await inngest.send({

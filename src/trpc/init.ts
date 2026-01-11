@@ -2,6 +2,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import { cache } from "react";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { polarClient } from "@/lib/polar";
 export const createTRPCContext = cache(async () => {
   /**
    * @see: https://trpc.io/docs/server/context
@@ -38,3 +39,25 @@ export const protectedProcedure = baseProcedure.use(async ({ ctx, next }) => {
     ctx: { ...ctx, auth: session },
   });
 });
+
+export const premuimProcedure = protectedProcedure.use(
+  async ({ ctx, next }) => {
+    const customer = await polarClient.customers.getStateExternal({
+      externalId: ctx.auth.user.id,
+    });
+
+    if (
+      !customer.activeSubscriptions ||
+      customer.activeSubscriptions.length === 0
+    ) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "PREMIUM MEMBERSHIP REQUIRED",
+      });
+    }
+
+    return next({
+      ctx: { ...ctx, customer },
+    });
+  },
+);

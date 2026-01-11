@@ -58,7 +58,7 @@ const LoginForm = () => {
         onError: (ctx) => {
           toast.error(ctx.error.message || "Something went wrong");
         },
-      }
+      },
     );
   };
 
@@ -82,7 +82,12 @@ const LoginForm = () => {
                     className="w-full"
                     disabled={isPending}
                   >
-                    <Image width={20} height={20} src={"/images/github.svg"} alt="github" />
+                    <Image
+                      width={20}
+                      height={20}
+                      src={"/images/github.svg"}
+                      alt="github"
+                    />
                     Login with Github
                   </Button>
                   <Button
@@ -91,7 +96,12 @@ const LoginForm = () => {
                     className="w-full"
                     disabled={isPending}
                   >
-                    <Image width={20} height={20} src={"/images/google.svg"} alt="google" />
+                    <Image
+                      width={20}
+                      height={20}
+                      src={"/images/google.svg"}
+                      alt="google"
+                    />
                     Login with Google
                   </Button>
                 </div>

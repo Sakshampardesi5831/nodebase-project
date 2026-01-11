@@ -23,9 +23,11 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "./ui/sidebar";
+import { useHasActiveSubscriptionHook } from "@/features/subscription/hooks/use-subscription";
 export const AppSideBar = () => {
   const router = useRouter();
   const pathName = usePathname();
+  const { hasActiveSubscription, isLoading } = useHasActiveSubscriptionHook();
   const menuItems = [
     {
       title: "Main",
@@ -99,21 +101,24 @@ export const AppSideBar = () => {
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <SidebarMenuItem>
-          <SidebarMenuButton
-            tooltip={"Upgrade to Pro"}
-            onClick={() => {}}
-            className="gap-x-4 h-10 px-4"
-          >
-            <StarIcon />
-            <span>Upgrade to Pro</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
+        {!hasActiveSubscription && !isLoading && (
+          //there is a bug to resolve it for removing the this item after purchase
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              tooltip={"Upgrade to Pro"}
+              onClick={() => authClient.checkout({ slug: "Nodebase-dev" })}
+              className="gap-x-4 h-10 px-4"
+            >
+              <StarIcon />
+              <span>Upgrade to Pro</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        )}
       </SidebarFooter>
       <SidebarMenuItem>
         <SidebarMenuButton
           tooltip={"Billing Portal"}
-          onClick={() => {}}
+          onClick={() => authClient.customer.portal()}
           className="gap-x-4 h-10 px-4"
         >
           <CreditCardIcon />

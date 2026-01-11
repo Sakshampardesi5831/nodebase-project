@@ -26,7 +26,7 @@ export const execute = inngest.createFunction(
           recordInputs: true,
           recordOutputs: true,
         },
-      }
+      },
     );
 
     const { steps: openAiStep } = await step.ai.wrap(
@@ -41,7 +41,7 @@ export const execute = inngest.createFunction(
           recordInputs: true,
           recordOutputs: true,
         },
-      }
+      },
     );
     const { steps: anthropicStep } = await step.ai.wrap(
       "anthropic-generate-text",
@@ -55,7 +55,7 @@ export const execute = inngest.createFunction(
           recordInputs: true,
           recordOutputs: true,
         },
-      }
+      },
     );
 
     const stepOutput = {
@@ -65,5 +65,5 @@ export const execute = inngest.createFunction(
     };
 
     return stepOutput;
-  }
+  },
 );

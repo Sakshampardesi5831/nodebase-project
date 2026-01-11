@@ -6,7 +6,7 @@ const Page = async () => {
   await requireUnAuth();
   return (
     <Fragment>
-      <RegisterForm/>
+      <RegisterForm />
     </Fragment>
   );
 };
